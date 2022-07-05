@@ -7,128 +7,128 @@ goog.provide("Blockly.Constants.Tngl");
 goog.require("Blockly");
 goog.require("Blockly.Blocks");
 
-/////////////////////////////////////////////////////////////////////
-
-// Blockly.Blocks["device"].setMutators = function () {
-//   this.jsonInit({ mutator: "device_mutator" });
-// };
-
-// Blockly.Blocks["device_mutator"] = {
-//   init: function () {
-//     this.appendDummyInput().setAlign(Blockly.ALIGN_RIGHT).appendField("Inline color field").appendField(new Blockly.FieldCheckbox(false), "COLOR_MUTATION");
-//     this.setColour(240);
-//     this.setTooltip("");
-//     this.setHelpUrl("");
-//   },
-// };
-
-// Blockly.Constants.Tngl.ANIMATION_FILL_MIXIN = {
-//   connection_: null,
-//   mutation_field_: null,
-//   mutation_field_last_: null,
-//   /**
-//    * Create XML to represent the number inputs.
-//    * @return {Element} XML storage element.
-//    * @this Blockly.Block
-//    */
-//   mutationToDom: function () {
-//     var container = document.createElement("mutation");
-
-//     if (this.mutation_field_ == "TRUE") {
-//       container.setAttribute("inline_color_field", this.mutation_field_);
-//     }
-
-//     return container;
-//   },
-//   /**
-//    * Parse XML to restore the inputs.
-//    * @param {!Element} xmlElement XML storage element.
-//    * @this Blockly.Block
-//    */
-//   domToMutation: function (xmlElement) {
-//     this.mutation_field_ = xmlElement.getAttribute("inline_color_field");
-
-//     this.updateShape_();
-//   },
-//   /**
-//    * Populate the mutator's dialog with this block's components.
-//    * @param {!Blockly.Workspace} workspace Mutator's workspace.
-//    * @return {!Blockly.Block} Root block in mutator.
-//    * @this Blockly.Block
-//    */
-//   decompose: function (workspace) {
-//     var containerBlock = workspace.newBlock("device_mutator");
-//     containerBlock.setFieldValue(this.mutation_field_, "COLOR_MUTATION");
-
-//     containerBlock.initSvg();
-//     return containerBlock;
-//   },
-//   /**
-//    * Reconfigure this block based on the mutator dialog's components.
-//    * @param {!Blockly.Block} containerBlock Root block in mutator.
-//    * @this Blockly.Block
-//    */
-//   compose: function (containerBlock) {
-//     // Get check box values
-//     this.mutation_field_ = containerBlock.getFieldValue("COLOR_MUTATION");
-
-//     this.updateShape_();
-//     // Reconnect any child blocks
-//     if (this.getInput("NEXT")) {
-//       Blockly.Mutator.reconnect(this.connection_, this, "NEXT");
-//     }
-//   },
-//   /**
-//    * Store pointers to any connected child blocks.
-//    * @param {!Blockly.Block} containerBlock Root block in mutator.
-//    * @this Blockly.Block
-//    */
-//   saveConnections: function (containerBlock) {
-//     var input = this.getInput("NEXT");
-//     if (input) {
-//       this.connection_ = input && input.connection.targetConnection;
-//     }
-//   },
-//   /**
-//    * Modify this block to have the correct number of inputs.
-//    * @this Blockly.Block
-//    * @private
-//    */
-//   updateShape_: function () {
-//     if (this.mutation_field_last_ !== this.mutation_field_) {
-//       this.mutation_field_last_ = this.mutation_field_;
-
-//       // store field values
-//       let color = this.getFieldValue("COLOR");
-//       let duration = this.getFieldValue("DURATION");
-
-//       // Remove the old input (so that you don't have inputs stack repeatedly)
-//       if (this.getInput("NEXT")) {
-//         this.removeInput("NEXT");
-//       }
-
-//       // Append the new input based on the checkbox
-//       if (this.mutation_field_ == "TRUE") {
-//         this.appendValueInput("NEXT").setCheck("animation").appendField("SOLIDNÍ BARVA ").appendField(new Blockly.FieldTextInput(), "COLOR").appendField(" ⌛").appendField(new Blockly.FieldTextInput(), "DURATION");
-//       } else {
-//         this.appendValueInput("NEXT").setCheck("animation").appendField("SOLIDNÍ BARVA ").appendField(new Blockly.FieldColour(), "COLOR").appendField("  ⌛").appendField(new Blockly.FieldTextInput(), "DURATION");
-//       }
-
-//       // validators are deleted, so reconfigure them
-//       this.setValidators();
-
-//       // set back field values with the help of the validators
-//       this.setFieldValue(color, "COLOR");
-//       this.setFieldValue(duration, "DURATION");
-//     }
-//   },
-// };
-
-// Blockly.Extensions.registerMutator("device_mutator", Blockly.Constants.Tngl.DEVICE_MIXIN, null, [""]);
-
-/////////////////////////////////////////////////////////////////////
-
-Blockly.Blocks["animation_fill"].setMutators = function () {
+ /////////////////////////////////////////////////////////////////////
+ 
+ // Blockly.Blocks["device"].setMutators = function () {
+ //   this.jsonInit({ mutator: "device_mutator" });
+ // };
+ 
+ // Blockly.Blocks["device_mutator"] = {
+ //   init: function () {
+ //     this.appendDummyInput().setAlign(Blockly.ALIGN_RIGHT).appendField("Inline color field").appendField(new Blockly.FieldCheckbox(false), "COLOR_MUTATION");
+ //     this.setColour(240);
+ //     this.setTooltip("");
+ //     this.setHelpUrl("");
+ //   },
+ // };
+ 
+ // const ANIMATION_FILL_MIXIN = {
+ //   connection_: null,
+ //   mutation_field_: null,
+ //   mutation_field_last_: null,
+ //   /**
+ //    * Create XML to represent the number inputs.
+ //    * @return {Element} XML storage element.
+ //    * @this Blockly.Block
+ //    */
+ //   mutationToDom: function () {
+ //     var container = document.createElement("mutation");
+ 
+ //     if (this.mutation_field_ == "TRUE") {
+ //       container.setAttribute("inline_color_field", this.mutation_field_);
+ //     }
+ 
+ //     return container;
+ //   },
+ //   /**
+ //    * Parse XML to restore the inputs.
+ //    * @param {!Element} xmlElement XML storage element.
+ //    * @this Blockly.Block
+ //    */
+ //   domToMutation: function (xmlElement) {
+ //     this.mutation_field_ = xmlElement.getAttribute("inline_color_field");
+ 
+ //     this.updateShape_();
+ //   },
+ //   /**
+ //    * Populate the mutator's dialog with this block's components.
+ //    * @param {!Blockly.Workspace} workspace Mutator's workspace.
+ //    * @return {!Blockly.Block} Root block in mutator.
+ //    * @this Blockly.Block
+ //    */
+ //   decompose: function (workspace) {
+ //     var containerBlock = workspace.newBlock("device_mutator");
+ //     containerBlock.setFieldValue(this.mutation_field_, "COLOR_MUTATION");
+ 
+ //     containerBlock.initSvg();
+ //     return containerBlock;
+ //   },
+ //   /**
+ //    * Reconfigure this block based on the mutator dialog's components.
+ //    * @param {!Blockly.Block} containerBlock Root block in mutator.
+ //    * @this Blockly.Block
+ //    */
+ //   compose: function (containerBlock) {
+ //     // Get check box values
+ //     this.mutation_field_ = containerBlock.getFieldValue("COLOR_MUTATION");
+ 
+ //     this.updateShape_();
+ //     // Reconnect any child blocks
+ //     if (this.getInput("NEXT")) {
+ //       Blockly.Mutator.reconnect(this.connection_, this, "NEXT");
+ //     }
+ //   },
+ //   /**
+ //    * Store pointers to any connected child blocks.
+ //    * @param {!Blockly.Block} containerBlock Root block in mutator.
+ //    * @this Blockly.Block
+ //    */
+ //   saveConnections: function (containerBlock) {
+ //     var input = this.getInput("NEXT");
+ //     if (input) {
+ //       this.connection_ = input && input.connection.targetConnection;
+ //     }
+ //   },
+ //   /**
+ //    * Modify this block to have the correct number of inputs.
+ //    * @this Blockly.Block
+ //    * @private
+ //    */
+ //   updateShape_: function () {
+ //     if (this.mutation_field_last_ !== this.mutation_field_) {
+ //       this.mutation_field_last_ = this.mutation_field_;
+ 
+ //       // store field values
+ //       let color = this.getFieldValue("COLOR");
+ //       let duration = this.getFieldValue("DURATION");
+ 
+ //       // Remove the old input (so that you don't have inputs stack repeatedly)
+ //       if (this.getInput("NEXT")) {
+ //         this.removeInput("NEXT");
+ //       }
+ 
+ //       // Append the new input based on the checkbox
+ //       if (this.mutation_field_ == "TRUE") {
+ //         this.appendValueInput("NEXT").setCheck("animation").appendField("SOLIDNÍ BARVA ").appendField(new Blockly.FieldTextInput(), "COLOR").appendField(" ⌛").appendField(new Blockly.FieldTextInput(), "DURATION");
+ //       } else {
+ //         this.appendValueInput("NEXT").setCheck("animation").appendField("SOLIDNÍ BARVA ").appendField(new Blockly.FieldColour(), "COLOR").appendField("  ⌛").appendField(new Blockly.FieldTextInput(), "DURATION");
+ //       }
+ 
+ //       // validators are deleted, so reconfigure them
+ //       this.setValidators();
+ 
+ //       // set back field values with the help of the validators
+ //       this.setFieldValue(color, "COLOR");
+ //       this.setFieldValue(duration, "DURATION");
+ //     }
+ //   },
+ // };
+ 
+ // Blockly.Extensions.registerMutator("device_mutator", DEVICE_MIXIN, null, [""]);
+ 
+ /////////////////////////////////////////////////////////////////////
+ 
+ Blockly.Blocks["animation_fill"].setMutators = function () {
   this.jsonInit({ mutator: "animation_fill_mutator" });
 };
 
@@ -141,7 +141,7 @@ Blockly.Blocks["animation_fill_mutator"] = {
   },
 };
 
-Blockly.Constants.Tngl.ANIMATION_FILL_MIXIN = {
+const ANIMATION_FILL_MIXIN = {
   connection_: null,
   mutation_field_: null,
   mutation_field_last_: null,
@@ -243,7 +243,7 @@ Blockly.Constants.Tngl.ANIMATION_FILL_MIXIN = {
   },
 };
 
-Blockly.Extensions.registerMutator("animation_fill_mutator", Blockly.Constants.Tngl.ANIMATION_FILL_MIXIN, null, [""]);
+Blockly.Extensions.registerMutator("animation_fill_mutator", ANIMATION_FILL_MIXIN, null, [""]);
 
 /////////////////////////////////////////////////////////////////////
 
@@ -262,7 +262,7 @@ Blockly.Blocks["animation_fade_mutator"] = {
   },
 };
 
-Blockly.Constants.Tngl.ANIMATION_FADE_MIXIN = {
+const ANIMATION_FADE_MIXIN = {
   connection_: null,
   mutation_fields_: [null, null],
   mutation_fields_last_: [null, null],
@@ -398,7 +398,7 @@ Blockly.Constants.Tngl.ANIMATION_FADE_MIXIN = {
   },
 };
 
-Blockly.Extensions.registerMutator("animation_fade_mutator", Blockly.Constants.Tngl.ANIMATION_FADE_MIXIN, null, [""]);
+Blockly.Extensions.registerMutator("animation_fade_mutator",  ANIMATION_FADE_MIXIN, null, [""]);
 
 ///////////////////////////////////////////////////////////////
 
@@ -415,7 +415,7 @@ Blockly.Blocks["animation_plasma_shot_mutator"] = {
   },
 };
 
-Blockly.Constants.Tngl.ANIMATION_FILL_MIXIN = {
+const ANIMATION_PLASMA_SHOT_MIXIN = {
   connection_: null,
   mutation_field_: null,
   mutation_field_last_: null,
@@ -532,7 +532,7 @@ Blockly.Constants.Tngl.ANIMATION_FILL_MIXIN = {
   },
 };
 
-Blockly.Extensions.registerMutator("animation_plasma_shot_mutator", Blockly.Constants.Tngl.ANIMATION_FILL_MIXIN, null, [""]);
+Blockly.Extensions.registerMutator("animation_plasma_shot_mutator",  ANIMATION_PLASMA_SHOT_MIXIN, null, [""]);
 
 /////////////////////////////////////////////////////////////////////
 Blockly.Blocks["animation_loading_bar"].setMutators = function () {
@@ -550,7 +550,7 @@ Blockly.Blocks["animation_loading_bar_mutator"] = {
   },
 };
 
-Blockly.Constants.Tngl.ANIMATION_LOADING_BAR_MIXIN = {
+const ANIMATION_LOADING_BAR_MIXIN = {
   connection_: null,
   mutation_fields_: [null, null],
   mutation_fields_last_: [null, null],
@@ -685,7 +685,7 @@ Blockly.Constants.Tngl.ANIMATION_LOADING_BAR_MIXIN = {
   },
 };
 
-Blockly.Extensions.registerMutator("animation_loading_bar_mutator", Blockly.Constants.Tngl.ANIMATION_LOADING_BAR_MIXIN, null, [""]);
+Blockly.Extensions.registerMutator("animation_loading_bar_mutator", ANIMATION_LOADING_BAR_MIXIN, null, [""]);
 
 ///////////////////////////////////////////////////////////////
 
@@ -704,7 +704,7 @@ Blockly.Blocks["animation_color_roll_mutator"] = {
   },
 };
 
-Blockly.Constants.Tngl.ANIMATION_COLOR_ROLL_MIXIN = {
+const ANIMATION_COLOR_ROLL_MIXIN = {
   connection_: null,
   mutation_fields_: [null, null],
   mutation_fields_last_: [null, null],
@@ -840,7 +840,7 @@ Blockly.Constants.Tngl.ANIMATION_COLOR_ROLL_MIXIN = {
   },
 };
 
-Blockly.Extensions.registerMutator("animation_color_roll_mutator", Blockly.Constants.Tngl.ANIMATION_COLOR_ROLL_MIXIN, null, [""]);
+Blockly.Extensions.registerMutator("animation_color_roll_mutator", ANIMATION_COLOR_ROLL_MIXIN, null, [""]);
 
 ///////////////////////////////////////////////////////////////
 
@@ -860,7 +860,7 @@ Blockly.Blocks["animation_color_gradient3_mutator"] = {
   },
 };
 
-Blockly.Constants.Tngl.ANIMATION_COLOR_GRADIENT3_MIXIN = {
+const ANIMATION_COLOR_GRADIENT3_MIXIN = {
   connection_: null,
   mutation_fields_: [null, null, null],
   mutation_fields_last_: [null, null, null],
@@ -1002,7 +1002,7 @@ Blockly.Constants.Tngl.ANIMATION_COLOR_GRADIENT3_MIXIN = {
   },
 };
 
-Blockly.Extensions.registerMutator("animation_color_gradient3_mutator", Blockly.Constants.Tngl.ANIMATION_COLOR_GRADIENT3_MIXIN, null, [""]);
+Blockly.Extensions.registerMutator("animation_color_gradient3_mutator", ANIMATION_COLOR_GRADIENT3_MIXIN, null, [""]);
 
 ///////////////////////////////////////////////////////////////
 
@@ -1024,7 +1024,7 @@ Blockly.Blocks["animation_color_gradient5_mutator"] = {
   },
 };
 
-Blockly.Constants.Tngl.ANIMATION_COLOR_GRADIENT5_MIXIN = {
+const ANIMATION_COLOR_GRADIENT5_MIXIN = {
   connection_: null,
   mutation_fields_: [null, null, null, null, null],
   mutation_fields_last_: [null, null, null, null, null],
@@ -1172,4 +1172,4 @@ Blockly.Constants.Tngl.ANIMATION_COLOR_GRADIENT5_MIXIN = {
   },
 };
 
-Blockly.Extensions.registerMutator("animation_color_gradient5_mutator", Blockly.Constants.Tngl.ANIMATION_COLOR_GRADIENT5_MIXIN, null, [""]);
+Blockly.Extensions.registerMutator("animation_color_gradient5_mutator", ANIMATION_COLOR_GRADIENT5_MIXIN, null, [""]);
