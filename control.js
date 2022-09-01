@@ -157,6 +157,10 @@ window.onload = function () {
     ],
   });
 
+  window.wavesurfer.on("seek", () => {
+    Code.music.currentTime = window.wavesurfer.getCurrentTime();
+  });
+
   // wavesurfer.setMute(true);
   //window.musicDebounce = false;
   // const playPause = document.querySelector("#playPause");
@@ -173,40 +177,73 @@ window.onload = function () {
   //   Code.device.setTimeline();
   // };
 
-  wavesurfer.on("interaction", function () {
-    setTimeout(() => {
-      if (wavesurfer.getDuration()) {
-        const playing = wavesurfer.isPlaying();
+  // wavesurfer.on("interaction", function () {
+  //   setTimeout(() => {
+  //     if (wavesurfer.getDuration()) {
+  //       const playing = wavesurfer.isPlaying();
 
-        if (playing != !Code.device.timeline.paused()) {
-          if (playing) {
-            Code.device.timeline.unpause();
-          } else {
-            Code.device.timeline.pause();
-          }
-        }
+  //       if (playing != !Code.device.timeline.paused()) {
+  //         if (playing) {
+  //           Code.device.timeline.unpause();
+  //         } else {
+  //           Code.device.timeline.pause();
+  //         }
+  //       }
 
-        Code.device.timeline.setMillis(wavesurfer.getCurrentTime() * 1000);
-      }
+  //       Code.device.timeline.setMillis(wavesurfer.getCurrentTime() * 1000);
+  //     }
 
-      Code.device.syncTimeline().catch(() => {
-        console.log("Device Disconnected");
-      });
-    }, 1);
-  });
+  //     Code.device.syncTimeline().catch(() => {
+  //       console.log("Device Disconnected");
+  //     });
+  //   }, 1);
+  // });
   // wavesurfer.load('./elevator.mp3');
 
   wavesurfer.load('./timeline.mp3');
 
   document.addEventListener("keypress", function onPress(event) {
     if (event.key === " ") {
-      wavesurfer.playPause();
+      if(Code.music.paused){
+        Code.timeline.unpause();
+        console.log("Play");
+      
+        if (Code.music.src) {
+          if (Code.metronome.src) {
+      
+            let timestamp = Code.music.currentTime;
+      
+            Code.metronome.load();
+            Code.music.load();
+      
+            Code.metronome.currentTime = timestamp + offset;
+            Code.music.currentTime = timestamp;
+      
+            Code.metronome.play();
+            Code.music.play();
+          } else {
+            Code.music.play();
+          }
+        }
+      
+        Code.device.syncTimeline();
+      } else {
+        Code.timeline.pause();
+        console.log("Pause");
+      
+        if (Code.music.src) {
+          Code.music.pause();
+        }
+      
+        if (Code.metronome.src) {
+          Code.metronome.pause();
+        }
+      
+        Code.device.syncTimeline();
+      }
 
-      const dur = wavesurfer.getDuration();
-      const pos = dur ? wavesurfer.getCurrentTime() / wavesurfer.getDuration() : 0;
-      wavesurfer.seekAndCenter(pos);
-    }
-  });
+  }
+});
 
   let count = 100;
   let debounce = true;
@@ -533,12 +570,19 @@ const parseInputXMLfile = function (file) {
 document.getElementById("music").addEventListener("change", function () {
   var url = URL.createObjectURL(this.files[0]);
   window.blockly_music = this.files[0];
-  // Code.music.setAttribute("src", url);
+  Code.music.setAttribute("src", url);
   wavesurfer.load(url);
 
   Code.device.timeline.pause();
   Code.device.timeline.setMillis(wavesurfer.getCurrentTime() * 1000);
   Code.device.syncTimeline();
+});
+
+document.getElementById("metronome").addEventListener("change", function () {
+  var url = URL.createObjectURL(this.files[0]);
+  window.blockly_music = this.files[0];
+  Code.metronome.setAttribute("src", url);
+  // wavesurfer.load(url);
 });
 
 function getHexColor(colorStr) {

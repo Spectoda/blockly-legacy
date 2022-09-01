@@ -312,9 +312,12 @@ Code.control.setVisible = function (enable) {
   }
 };
 
-// Code.music = /** @type {HTMLAudioElement} */ (document.getElementById("timeline-old"));
-// Code.metronome = new Audio();
+Code.music = new Audio();
+Code.metronome = new Audio();
 
+Code.timeline = Code.device.timeline;
+
+Code.bank = 0;
 // Code.device.timeline = new TimeTrack();
 
 // Code.bank = 0;
@@ -352,19 +355,126 @@ Code.control.setVisible = function (enable) {
 //   // if (Code.metronome.src) {
 //   //   Code.metronome.pause();
 //   // }
-
+ 
 //   Code.device.syncTimeline();
 // });
 
+
+var offset = 0;
+
+
+Code.music.addEventListener("timeupdate", async () => {
+
+  const dur = window.wavesurfer.getDuration();
+  const pos = dur ? Code.music.currentTime / window.wavesurfer.getDuration() : 0;
+
+  window.wavesurfer.setDisabledEventEmissions(['seek'])
+  window.wavesurfer.seekAndCenter(pos >= 1.0 ? 1.0 : pos);
+  window.wavesurfer.setDisabledEventEmissions([])
+
+  if (Code.metronome.src) {
+    let paused = Code.music.paused;
+    let delta = Code.music.currentTime - Code.metronome.currentTime;
+
+    //console.log("delta:", delta);
+
+    if (delta > 0.02 || delta < -0.02) {
+      if (paused) {
+        let timestamp = Code.music.currentTime;
+
+        Code.metronome.currentTime = timestamp + offset;
+        Code.music.currentTime = timestamp;
+      }
+
+      if (!paused) {
+        console.warn("Large music track delta: ", delta);
+        console.log("Synchronizing music tracks...");
+
+        let timestamp = Code.music.currentTime;
+
+        Code.metronome.load();
+        Code.music.load();
+
+        Code.metronome.currentTime = timestamp + offset;
+        Code.music.currentTime = timestamp;
+
+        Code.metronome.play();
+        Code.music.play();
+      }
+
+      console.log("Synced delta:", Code.metronome.currentTime - Code.music.currentTime);
+     } 
+    //else {
+    //   offset = delta;
+
+    //   if (offset > 1) {
+    //     offset = 1;
+    //   }
+    //   if (offset < -1) {
+    //     offset = -1;
+    //   }
+    // }
+  }
+
+  Code.timeline.setMillis(Code.music.currentTime * 1000);
+
+  Code.device.syncTimeline();
+});
+
+Code.music.addEventListener("play", () => {
+  if (Code.metronome.src && Code.metronome.paused) {
+    let timestamp = Code.music.currentTime;
+
+    Code.metronome.load();
+    Code.music.load();
+
+    Code.metronome.currentTime = timestamp + offset;
+    Code.music.currentTime = timestamp;
+
+    Code.metronome.play();
+    Code.music.play();
+  }
+
+  Code.timeline.unpause();
+  Code.timeline.setMillis(Code.music.currentTime * 1000);
+
+  Code.device.syncTimeline();
+});
+
+Code.music.addEventListener("pause", () => {
+  if (Code.metronome.src) {
+    Code.metronome.pause();
+  }
+
+  Code.timeline.pause();
+  Code.timeline.setMillis(Code.music.currentTime * 1000);
+
+  Code.device.syncTimeline();
+});
+
 Code.play = async function () {
+  Code.timeline.unpause();
   console.log("Play");
 
-  Code.device.timeline.unpause();
-  // Code.device.timeline.setMillis(wavesurfer.getCurrentTime() * 1000);
+  if (Code.music.src) {
+    if (Code.metronome.src) {
 
-  wavesurfer.play();
+      let timestamp = Code.music.currentTime;
 
-  // Code.device.syncTimeline();
+      Code.metronome.load();
+      Code.music.load();
+
+      Code.metronome.currentTime = timestamp + offset;
+      Code.music.currentTime = timestamp;
+
+      Code.metronome.play();
+      Code.music.play();
+    } else {
+      Code.music.play();
+    }
+  }
+
+  Code.device.syncTimeline();
 };
 
 Code.cycle = async function () {
@@ -378,18 +488,18 @@ Code.cycle = async function () {
 };
 
 Code.pause = async function () {
+  Code.timeline.pause();
   console.log("Pause");
 
-  Code.device.timeline.pause();
-  // Code.device.timeline.setMillis(wavesurfer.getCurrentTime() * 1000);
+  if (Code.music.src) {
+    Code.music.pause();
+  }
 
-  wavesurfer.pause();
+  if (Code.metronome.src) {
+    Code.metronome.pause();
+  }
 
-  const dur = wavesurfer.getDuration();
-  const pos = dur ? wavesurfer.getCurrentTime() / wavesurfer.getDuration() : 0;
-  wavesurfer.seekAndCenter(pos);
-
-  // Code.device.syncTimeline();
+  Code.device.syncTimeline();
 };
 
 Code.stop = async function () {
@@ -1261,9 +1371,9 @@ function gotDevices(deviceInfos) {
   newMusicOutputSelector.addEventListener("change", changeMusicDestination);
   document.querySelector("select#musicOutputSelect").replaceWith(newMusicOutputSelector);
 
-  // const newMetronomeOutputSelector = masterOutputSelector.cloneNode(true);
-  // newMetronomeOutputSelector.addEventListener("change", changeMetronomeDestination);
-  // document.querySelector("select#metronomeOutputSelect").replaceWith(newMetronomeOutputSelector);
+  const newMetronomeOutputSelector = masterOutputSelector.cloneNode(true);
+  newMetronomeOutputSelector.addEventListener("change", changeMetronomeDestination);
+  document.querySelector("select#metronomeOutputSelect").replaceWith(newMetronomeOutputSelector);
 }
 
 function handleError(error) {
@@ -1271,17 +1381,17 @@ function handleError(error) {
 }
 
 function changeMusicDestination(event) {
-  throw "NOT IMPLEMENTED";
-  // const deviceId = event.target.value;
-  // const element = Code.music;
-  // attachSinkId(element, deviceId);
+  // throw "NOT IMPLEMENTED";
+  const deviceId = event.target.value;
+  const element = Code.music;
+  attachSinkId(element, deviceId);
 }
 
-// function changeMetronomeDestination(event) {
-//   const deviceId = event.target.value;
-//   const element = Code.metronome;
-//   attachSinkId(element, deviceId);
-// }
+function changeMetronomeDestination(event) {
+  const deviceId = event.target.value;
+  const element = Code.metronome;
+  attachSinkId(element, deviceId);
+}
 
 // Attach audio output device to the provided media element using the deviceId.
 function attachSinkId(element, sinkId) {
