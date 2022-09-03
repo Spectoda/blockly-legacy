@@ -16,7 +16,7 @@ goog.require("Blockly.Tngl");
 // }
 
 function formatByte(value) {
-  if(value < 0) {
+  if (value < 0) {
     return "0x00";
   } else if (value < 16) {
     return "0x0" + value.toString(16);
@@ -39,20 +39,18 @@ function formatBytePercentage(percent) {
   let value = percent.substring(0, percent.indexOf("%"));
 
   //return ((percent * 1000) / 1000).toString() + "%";
-  return formatByte(Math.round(value * 255.0 / 100.0));
+  return formatByte(Math.round((value * 255.0) / 100.0));
 }
-
 
 function formatPercentage(percent) {
   //return ((percent * 1000) / 1000).toString() + "%";
-  return percent.replace(/ /g, '');
+  return percent.replace(/ /g, "");
 }
 
 function formatPixels(pixels) {
   //return ((percent * 1000) / 1000).toString() + "%";
-  return pixels.replace(/ /g, '');
+  return pixels.replace(/ /g, "");
 }
-
 
 // function ratioToByte(ratio) {
 //   return Math.floor(ratio * 255);
@@ -72,9 +70,8 @@ function formatLabel(label) {
 }
 
 function formatTimestamp(timestamp) {
-  return timestamp.replace(/ /g, '');
+  return timestamp.replace(/ /g, "");
 }
-
 
 function decodeExtendDeviceValue(value_next) {
   if (value_next != "") {
@@ -89,76 +86,76 @@ function getDuration(from, to) {
     if (!value) {
       return [0, "0s"];
     }
-  
+
     if (typeof value == "number") {
       value = value.toString();
     }
-  
+
     value = value.trim();
-  
+
     if (value == "inf" || value == "Inf" || value == "infinity" || value == "Infinity") {
       return [2147483647, "Infinity"];
     }
-  
+
     if (value == "-inf" || value == "-Inf" || value == "-infinity" || value == "-Infinity") {
       return [-2147483648, "-Infinity"];
     }
-  
+
     // if the string value is a number
     if (!isNaN(value)) {
       value += "s";
     }
-  
+
     let days = value.match(/([+-]? *[0-9]+[.]?[0-9]*|[.][0-9]+)\s*d/gi);
     let hours = value.match(/([+-]? *[0-9]+[.]?[0-9]*|[.][0-9]+)\s*h/gi);
     let minutes = value.match(/([+-]? *[0-9]+[.]?[0-9]*|[.][0-9]+)\s*m(?!s)/gi);
     let secs = value.match(/([+-]? *[0-9]+[.]?[0-9]*|[.][0-9]+)\s*s/gi);
     let msecs = value.match(/([+-]? *[0-9]+[.]?[0-9]*|[.][0-9]+)\s*(t|ms)/gi);
-  
+
     let result = "";
     let total = 0;
-  
+
     // logging.verbose(days);
     // logging.verbose(hours);
     // logging.verbose(minutes);
     // logging.verbose(secs);
     // logging.verbose(msecs);
-  
+
     while (days && days.length) {
       let d = parseFloat(days[0].replace(/\s/, ""));
       result += d + "d ";
       total += d * 86400000;
       days.shift();
     }
-  
+
     while (hours && hours.length) {
       let h = parseFloat(hours[0].replace(/\s/, ""));
       result += h + "h ";
       total += h * 3600000;
       hours.shift();
     }
-  
+
     while (minutes && minutes.length) {
       let m = parseFloat(minutes[0].replace(/\s/, ""));
       result += m + "m ";
       total += m * 60000;
       minutes.shift();
     }
-  
+
     while (secs && secs.length) {
       let s = parseFloat(secs[0].replace(/\s/, ""));
       result += s + "s ";
       total += s * 1000;
       secs.shift();
     }
-  
+
     while (msecs && msecs.length) {
       let ms = parseFloat(msecs[0].replace(/\s/, ""));
       result += ms + "ms ";
       total += ms;
       msecs.shift();
     }
-  
+
     if (total >= 2147483647) {
       return [2147483647, "Infinity"];
     } else if (total <= -2147483648) {
@@ -171,11 +168,11 @@ function getDuration(from, to) {
   }
 
   if (from == "Infinity") {
-    return "0t";
+    return "0ms";
   } else if (from == "-Infinity") {
     return to;
   } else if (to == "-Infinity") {
-    return "0t";
+    return "0ms";
   } else if (to == "Infinity") {
     return "Infinity";
   } else {
@@ -191,7 +188,7 @@ Blockly.Tngl["animation_dummy_next"] = function (block) {
 };
 
 Blockly.Tngl["animation_dummy_add"] = function (block) {
-  var code = "animNone(0t)";
+  var code = "animNone(0ms)";
   return [code, Blockly.Tngl.ORDER_NONE];
 };
 
@@ -200,7 +197,7 @@ Blockly.Tngl["drawing"] = function (block) {
   var dropdown_time_definition = block.getFieldValue("TIME_DEFINITION");
   var text_duration = block.getFieldValue("DURATION");
   var dropdown_draw_mode = block.getFieldValue("DRAW_MODE");
-  var value_animation = Blockly.Tngl.valueToCode(block, "ANIMATION", Blockly.Tngl.ORDER_NONE);
+  var value_animation = Blockly.Tngl.valueToCode(block, "ANIMATION", Blockly.Tngl.ORDER_NONE) || "animNone(0ms)";
 
   var func;
 
@@ -240,7 +237,7 @@ Blockly.Tngl["animation_definition"] = function (block) {
   var statements_body = Blockly.Tngl.statementToCode(block, "BODY");
 
   // defAnimation("asdf", 5000);
-  var code = 'defAnimation(' + formatLabel(text_animation_label) + ', ' + formatTimestamp(text_duration) + ", {\n" + statements_body + "});\n";
+  var code = "defAnimation(" + formatLabel(text_animation_label) + ", " + formatTimestamp(text_duration) + ", {\n" + statements_body + "});\n";
   return code;
 };
 
@@ -251,7 +248,7 @@ Blockly.Tngl["animation_call"] = function (block) {
 
   // animDefined("asdf", 5000)
   value_next = formatNextAnimationValue(value_next);
-  var code = 'animDefined(' + formatLabel(text_animation_label) + ', ' + formatTimestamp(text_duration) + ")" + value_next;
+  var code = "animDefined(" + formatLabel(text_animation_label) + ", " + formatTimestamp(text_duration) + ")" + value_next;
   return [code, Blockly.Tngl.ORDER_NONE];
 };
 
@@ -266,8 +263,8 @@ Blockly.Tngl["animation_fill"] = function (block) {
 };
 
 Blockly.Tngl["animation_rainbow"] = function (block) {
-  var text_zoom = block.getFieldValue('ZOOM');
-  var text_duration = block.getFieldValue('DURATION');
+  var text_zoom = block.getFieldValue("ZOOM");
+  var text_duration = block.getFieldValue("DURATION");
   var value_next = Blockly.Tngl.valueToCode(block, "NEXT", Blockly.Tngl.ORDER_NONE);
 
   value_next = formatNextAnimationValue(value_next);
@@ -369,46 +366,31 @@ Blockly.Tngl["animation_palette_roll"] = function (block) {
   return [code, Blockly.Tngl.ORDER_NONE];
 };
 
-Blockly.Tngl['animation_color_gradient3'] = function(block) {
-  var colour_color1 = block.getFieldValue('COLOR1');
-  var colour_color2 = block.getFieldValue('COLOR2');
-  var colour_color3 = block.getFieldValue('COLOR3');
-  var text_smoothing = block.getFieldValue('SMOOTHING');
-  var text_scale = block.getFieldValue('SCALE');
-  var text_duration = block.getFieldValue('DURATION');
-  var value_next = Blockly.Tngl.valueToCode(block, 'NEXT', Blockly.Tngl.ORDER_NONE);
+Blockly.Tngl["animation_color_gradient3"] = function (block) {
+  var colour_color1 = block.getFieldValue("COLOR1");
+  var colour_color2 = block.getFieldValue("COLOR2");
+  var colour_color3 = block.getFieldValue("COLOR3");
+  var text_smoothing = block.getFieldValue("SMOOTHING");
+  var text_scale = block.getFieldValue("SCALE");
+  var text_duration = block.getFieldValue("DURATION");
+  var value_next = Blockly.Tngl.valueToCode(block, "NEXT", Blockly.Tngl.ORDER_NONE);
 
   value_next = formatNextAnimationValue(value_next);
 
-  var code =
-    "animColorGradient3(" +
-    formatTimestamp(text_duration) +
-    ", " +
-    colour_color1 +
-    ", " +
-    colour_color2 +
-    ", " +
-    colour_color3 +
-    ", " +
-    formatPercentage(text_smoothing) +
-    ", " +
-    formatPercentage(text_scale) +
-    ")" +
-    value_next;
+  var code = "animColorGradient3(" + formatTimestamp(text_duration) + ", " + colour_color1 + ", " + colour_color2 + ", " + colour_color3 + ", " + formatPercentage(text_smoothing) + ", " + formatPercentage(text_scale) + ")" + value_next;
   return [code, Blockly.Tngl.ORDER_NONE];
 };
 
-
-Blockly.Tngl['animation_color_gradient5'] = function(block) {
-  var colour_color1 = block.getFieldValue('COLOR1');
-  var colour_color2 = block.getFieldValue('COLOR2');
-  var colour_color3 = block.getFieldValue('COLOR3');
-  var colour_color4 = block.getFieldValue('COLOR4');
-  var colour_color5 = block.getFieldValue('COLOR5');
-  var text_smoothing = block.getFieldValue('SMOOTHING');
-  var text_scale = block.getFieldValue('SCALE');
-  var text_duration = block.getFieldValue('DURATION');
-  var value_next = Blockly.Tngl.valueToCode(block, 'NEXT', Blockly.Tngl.ORDER_NONE);
+Blockly.Tngl["animation_color_gradient5"] = function (block) {
+  var colour_color1 = block.getFieldValue("COLOR1");
+  var colour_color2 = block.getFieldValue("COLOR2");
+  var colour_color3 = block.getFieldValue("COLOR3");
+  var colour_color4 = block.getFieldValue("COLOR4");
+  var colour_color5 = block.getFieldValue("COLOR5");
+  var text_smoothing = block.getFieldValue("SMOOTHING");
+  var text_scale = block.getFieldValue("SCALE");
+  var text_duration = block.getFieldValue("DURATION");
+  var value_next = Blockly.Tngl.valueToCode(block, "NEXT", Blockly.Tngl.ORDER_NONE);
 
   value_next = formatNextAnimationValue(value_next);
 
@@ -570,13 +552,13 @@ Blockly.Tngl["modifier_timeloop"] = function (block) {
   return [code, Blockly.Tngl.ORDER_NONE];
 };
 
-Blockly.Tngl['modifier_timescale'] = function(block) {
+Blockly.Tngl["modifier_timescale"] = function (block) {
   var text_variable_label = block.getFieldValue("VARIABLE_LABEL");
   var value_modifier = Blockly.Tngl.valueToCode(block, "MODIFIER", Blockly.Tngl.ORDER_NONE);
 
-   // .modifyTimeScale($var)
-   var code = ".modifyTimeScale(" + formatLabel(text_variable_label) + ")" + value_modifier;
-   return [code, Blockly.Tngl.ORDER_NONE];
+  // .modifyTimeScale($var)
+  var code = ".modifyTimeScale(" + formatLabel(text_variable_label) + ")" + value_modifier;
+  return [code, Blockly.Tngl.ORDER_NONE];
 };
 
 Blockly.Tngl["modifier_fade"] = function (block) {
@@ -608,19 +590,26 @@ Blockly.Tngl["modifier_dummy_add"] = function (block) {
   return [code, Blockly.Tngl.ORDER_NONE];
 };
 
-Blockly.Tngl['modifier_settime'] = function(block) {
-  var text_timestamp = block.getFieldValue('TIMESTAMP');
-  var value_modifier = Blockly.Tngl.valueToCode(block, 'MODIFIER', Blockly.Tngl.ORDER_NONE);
+Blockly.Tngl["modifier_settime"] = function (block) {
+  var text_timestamp = block.getFieldValue("TIMESTAMP");
+  var value_modifier = Blockly.Tngl.valueToCode(block, "MODIFIER", Blockly.Tngl.ORDER_NONE);
   var code = ".modifyTimeSet(" + formatTimestamp(text_timestamp) + ")" + value_modifier;
   return [code, Blockly.Tngl.ORDER_NONE];
 };
 
 Blockly.Tngl["frame"] = function (block) {
   var text_start = block.getFieldValue("START");
+  var dropdown_time_definition = block.getFieldValue("TIME_DEFINITION");
   var text_duration = block.getFieldValue("DURATION");
   var statements_body = Blockly.Tngl.statementToCode(block, "BODY");
+
   // frame(0, 5000, { });
-  var code = "frame(" + formatTimestamp(text_start) + ", " + formatTimestamp(text_duration) + ", {\n" + statements_body + "});\n";
+  if (dropdown_time_definition === "DURATION") {
+    var code = "frame(" + formatTimestamp(text_start) + ", " + formatTimestamp(text_duration) + ", {\n" + statements_body + "});\n";
+  } else {
+    var code = "frame(" + formatTimestamp(text_start) + ", " + formatTimestamp(getDuration(text_start, text_duration)) + ", {\n" + statements_body + "});\n";
+  }
+
   return code;
 };
 
@@ -689,9 +678,9 @@ Blockly.Tngl["event_dummy_add"] = function (block) {
   return [code, Blockly.Tngl.ORDER_NONE];
 };
 
-Blockly.Tngl['event_emit_code'] = function(block) {
+Blockly.Tngl["event_emit_code"] = function (block) {
   var text_event_label = block.getFieldValue("EVENT_LABEL");
-  var value_event = Blockly.Tngl.valueToCode(block, 'EVENT', Blockly.Tngl.ORDER_NONE);
+  var value_event = Blockly.Tngl.valueToCode(block, "EVENT", Blockly.Tngl.ORDER_NONE);
   // ->emitLocalEvent($evnt)
   var code = "->emitAs(" + formatLabel(text_event_label) + ")" + value_event;
   return [code, Blockly.Tngl.ORDER_NONE];
@@ -705,12 +694,12 @@ Blockly.Tngl['event_emit_code'] = function(block) {
 //   return code;
 // };
 
-Blockly.Tngl['handler_manual'] = function(block) {
+Blockly.Tngl["handler_manual"] = function (block) {
   var text_start = block.getFieldValue("START");
   var text_duration = block.getFieldValue("DURATION");
   var text_event_label = block.getFieldValue("EVENT_LABEL");
   var statements_body = Blockly.Tngl.statementToCode(block, "BODY");
- 
+
   return "interactive(" + formatTimestamp(text_start) + ", " + formatTimestamp(text_duration) + ", " + formatLabel(text_event_label) + ", {\n" + statements_body + "});\n";
 };
 
@@ -830,7 +819,7 @@ Blockly.Tngl["clip_marks_definition"] = function (block) {
   var text_marks_label = block.getFieldValue("MARKS_LABEL");
   var statements_marks = Blockly.Tngl.statementToCode(block, "MARKS");
 
-  var code = 'defMarks(' + formatLabel(text_marks_label) + ', {\n' + statements_marks + "});\n";
+  var code = "defMarks(" + formatLabel(text_marks_label) + ", {\n" + statements_marks + "});\n";
   return code;
 };
 
@@ -899,7 +888,7 @@ Blockly.Tngl["tangle_pixels"] = function (block) {
   var text_range_step = block.getFieldValue("RANGE_STEP");
   var value_pixels = Blockly.Tngl.valueToCode(block, "PIXELS", Blockly.Tngl.ORDER_NONE);
 
-  var code = '  slice(' + formatLabel(text_device_label) + ', ' + text_range_from + ", " + text_range_count + ", " + text_range_step + ");\n" + value_pixels;
+  var code = "  slice(" + formatLabel(text_device_label) + ", " + text_range_from + ", " + text_range_count + ", " + text_range_step + ");\n" + value_pixels;
   return [code, Blockly.Tngl.ORDER_NONE];
 };
 
@@ -923,7 +912,7 @@ Blockly.Tngl["group_port"] = function (block) {
 Blockly.Tngl["group_definition"] = function (block) {
   var text_group_label = block.getFieldValue("GROUP_LABEL");
   var statements_body = Blockly.Tngl.statementToCode(block, "BODY");
-  var code = 'defGroup(' + formatLabel(text_group_label) + ', {\n' + statements_body + "});\n";
+  var code = "defGroup(" + formatLabel(text_group_label) + ", {\n" + statements_body + "});\n";
   return code;
 };
 
@@ -951,7 +940,7 @@ Blockly.Tngl["siftcanvas_tangle"] = function (block) {
   var text_tangle_label = block.getFieldValue("TANGLE_LABEL");
   var value_next = Blockly.Tngl.valueToCode(block, "NEXT", Blockly.Tngl.ORDER_NONE);
 
-  var code = '  tangle(' + formatLabel(text_tangle_label) + ');\n' + value_next;
+  var code = "  tangle(" + formatLabel(text_tangle_label) + ");\n" + value_next;
   return [code, Blockly.Tngl.ORDER_NONE];
 };
 
@@ -972,7 +961,7 @@ Blockly.Tngl["siftcanvas_group"] = function (block) {
   var text_group_label = block.getFieldValue("GROUP_LABEL");
   var value_next = Blockly.Tngl.valueToCode(block, "NEXT", Blockly.Tngl.ORDER_NONE);
 
-  var code = '  group(' + formatLabel(text_group_label) + ');\n' + value_next;
+  var code = "  group(" + formatLabel(text_group_label) + ");\n" + value_next;
   return [code, Blockly.Tngl.ORDER_NONE];
 };
 
@@ -985,7 +974,7 @@ Blockly.Tngl["siftcanvas_device"] = function (block) {
   var text_device_label = block.getFieldValue("DEVICE_LABEL");
   var value_next = Blockly.Tngl.valueToCode(block, "NEXT", Blockly.Tngl.ORDER_NONE);
 
-  var code = '  device(' + formatLabel(text_device_label) + ');\n' + value_next;
+  var code = "  device(" + formatLabel(text_device_label) + ");\n" + value_next;
   return [code, Blockly.Tngl.ORDER_NONE];
 };
 
@@ -1062,18 +1051,18 @@ Blockly.Tngl["commentary_spacer"] = function (block) {
 };
 
 Blockly.Tngl["device_4ports"] = function (block) {
-  var text_device_label = block.getFieldValue('DEVICE_LABEL');
-  var number_device_identifier = block.getFieldValue('DEVICE_IDENTIFIER');
-  var text_device_brightness = block.getFieldValue('DEVICE_BRIGHTNESS');
-  var checkbox_tangle_a = block.getFieldValue('TANGLE_A') == 'TRUE';
-  var text_port_a_length = block.getFieldValue('PORT_A_LENGTH');
-  var checkbox_tangle_b = block.getFieldValue('TANGLE_B') == 'TRUE';
-  var text_port_b_length = block.getFieldValue('PORT_B_LENGTH');
-  var checkbox_tangle_c = block.getFieldValue('TANGLE_C') == 'TRUE';
-  var text_port_c_length = block.getFieldValue('PORT_C_LENGTH');
-  var checkbox_tangle_d = block.getFieldValue('TANGLE_D') == 'TRUE';
-  var text_port_d_length = block.getFieldValue('PORT_D_LENGTH');
-  var statements_sensors = Blockly.Tngl.statementToCode(block, 'INPUTS');
+  var text_device_label = block.getFieldValue("DEVICE_LABEL");
+  var number_device_identifier = block.getFieldValue("DEVICE_IDENTIFIER");
+  var text_device_brightness = block.getFieldValue("DEVICE_BRIGHTNESS");
+  var checkbox_tangle_a = block.getFieldValue("TANGLE_A") == "TRUE";
+  var text_port_a_length = block.getFieldValue("PORT_A_LENGTH");
+  var checkbox_tangle_b = block.getFieldValue("TANGLE_B") == "TRUE";
+  var text_port_b_length = block.getFieldValue("PORT_B_LENGTH");
+  var checkbox_tangle_c = block.getFieldValue("TANGLE_C") == "TRUE";
+  var text_port_c_length = block.getFieldValue("PORT_C_LENGTH");
+  var checkbox_tangle_d = block.getFieldValue("TANGLE_D") == "TRUE";
+  var text_port_d_length = block.getFieldValue("PORT_D_LENGTH");
+  var statements_sensors = Blockly.Tngl.statementToCode(block, "INPUTS");
 
   var portmask = 0x00;
 
@@ -1123,22 +1112,22 @@ Blockly.Tngl["device_4ports"] = function (block) {
 };
 
 Blockly.Tngl["device_8ports"] = function (block) {
-  var text_device_label = block.getFieldValue('DEVICE_LABEL');
-  var number_device_identifier = block.getFieldValue('DEVICE_IDENTIFIER');
-  var text_device_brightness = block.getFieldValue('DEVICE_BRIGHTNESS');
-  var checkbox_tangle_a = block.getFieldValue('TANGLE_A') == 'TRUE';
-  var text_port_a_length = block.getFieldValue('PORT_A_LENGTH');
-  var checkbox_tangle_b = block.getFieldValue('TANGLE_B') == 'TRUE';
-  var text_port_b_length = block.getFieldValue('PORT_B_LENGTH');
-  var checkbox_tangle_c = block.getFieldValue('TANGLE_C') == 'TRUE';
-  var text_port_c_length = block.getFieldValue('PORT_C_LENGTH');
-  var checkbox_tangle_d = block.getFieldValue('TANGLE_D') == 'TRUE';
-  var text_port_d_length = block.getFieldValue('PORT_D_LENGTH');
-  var checkbox_tangle_e = block.getFieldValue('TANGLE_E') == 'TRUE';
-  var text_port_e_length = block.getFieldValue('PORT_E_LENGTH');
-  var checkbox_tangle_f = block.getFieldValue('TANGLE_F') == 'TRUE';
-  var text_port_f_length = block.getFieldValue('PORT_F_LENGTH');
-  var checkbox_tangle_g = block.getFieldValue('TANGLE_G') == 'TRUE';
+  var text_device_label = block.getFieldValue("DEVICE_LABEL");
+  var number_device_identifier = block.getFieldValue("DEVICE_IDENTIFIER");
+  var text_device_brightness = block.getFieldValue("DEVICE_BRIGHTNESS");
+  var checkbox_tangle_a = block.getFieldValue("TANGLE_A") == "TRUE";
+  var text_port_a_length = block.getFieldValue("PORT_A_LENGTH");
+  var checkbox_tangle_b = block.getFieldValue("TANGLE_B") == "TRUE";
+  var text_port_b_length = block.getFieldValue("PORT_B_LENGTH");
+  var checkbox_tangle_c = block.getFieldValue("TANGLE_C") == "TRUE";
+  var text_port_c_length = block.getFieldValue("PORT_C_LENGTH");
+  var checkbox_tangle_d = block.getFieldValue("TANGLE_D") == "TRUE";
+  var text_port_d_length = block.getFieldValue("PORT_D_LENGTH");
+  var checkbox_tangle_e = block.getFieldValue("TANGLE_E") == "TRUE";
+  var text_port_e_length = block.getFieldValue("PORT_E_LENGTH");
+  var checkbox_tangle_f = block.getFieldValue("TANGLE_F") == "TRUE";
+  var text_port_f_length = block.getFieldValue("PORT_F_LENGTH");
+  var checkbox_tangle_g = block.getFieldValue("TANGLE_G") == "TRUE";
   var text_port_g_length = block.getFieldValue("PORT_G_LENGTH");
   var checkbox_tangle_h = block.getFieldValue("TANGLE_H") == "TRUE";
   var text_port_h_length = block.getFieldValue("PORT_H_LENGTH");
@@ -1221,7 +1210,7 @@ Blockly.Tngl["device_8ports"] = function (block) {
 
 Blockly.Tngl["variable_create"] = function (block) {
   var text_label = block.getFieldValue("LABEL");
-  var value_source = Blockly.Tngl.valueToCode(block, "SOURCE", Blockly.Tngl.ORDER_NONE);
+  var value_source = Blockly.Tngl.valueToCode(block, "SOURCE", Blockly.Tngl.ORDER_NONE) || "0%";
   // $var = 0xff;
   // var code = "$" + text_label + " = " + value_source + ";\n";
   // variable($var, 0xff);
@@ -1246,9 +1235,9 @@ Blockly.Tngl["value_dummy"] = function (block) {
 
 Blockly.Tngl["value_math"] = function (block) {
   var dropdown_option = block.getFieldValue("OPTION");
-  var value_parameter_a = Blockly.Tngl.valueToCode(block, "PARAMETER_A", Blockly.Tngl.ORDER_NONE);
-  var value_parameter_b = Blockly.Tngl.valueToCode(block, "PARAMETER_B", Blockly.Tngl.ORDER_NONE);
-  
+  var value_parameter_a = Blockly.Tngl.valueToCode(block, "PARAMETER_A", Blockly.Tngl.ORDER_NONE) || "0%";
+  var value_parameter_b = Blockly.Tngl.valueToCode(block, "PARAMETER_B", Blockly.Tngl.ORDER_NONE) || "0%";
+
   var func = "";
 
   switch (dropdown_option) {
@@ -1275,13 +1264,13 @@ Blockly.Tngl["value_math"] = function (block) {
 };
 
 Blockly.Tngl["value_map"] = function (block) {
-  var value_parameter_x = Blockly.Tngl.valueToCode(block, "PARAMETER_X", Blockly.Tngl.ORDER_NONE);
-  var value_parameter_inmin = Blockly.Tngl.valueToCode(block, "PARAMETER_INMIN", Blockly.Tngl.ORDER_NONE);
-  var value_parameter_inmax = Blockly.Tngl.valueToCode(block, "PARAMETER_INMAX", Blockly.Tngl.ORDER_NONE);
-  var value_parameter_outmin = Blockly.Tngl.valueToCode(block, "PARAMETER_OUTMIN", Blockly.Tngl.ORDER_NONE);
-  var value_parameter_outmax = Blockly.Tngl.valueToCode(block, "PARAMETER_OUTMAX", Blockly.Tngl.ORDER_NONE);
- // mapValue(channel(0x00), value(0x00), value(0xff), value(0xff), value(0x00))
- var code = "mapValue(" + value_parameter_x + ", " + value_parameter_inmin + ", " + value_parameter_inmax+ ", " + value_parameter_outmin+ ", " + value_parameter_outmax + ")";
+  var value_parameter_x = Blockly.Tngl.valueToCode(block, "PARAMETER_X", Blockly.Tngl.ORDER_NONE) || "0%";
+  var value_parameter_inmin = Blockly.Tngl.valueToCode(block, "PARAMETER_INMIN", Blockly.Tngl.ORDER_NONE) || "0%";
+  var value_parameter_inmax = Blockly.Tngl.valueToCode(block, "PARAMETER_INMAX", Blockly.Tngl.ORDER_NONE) || "0%";
+  var value_parameter_outmin = Blockly.Tngl.valueToCode(block, "PARAMETER_OUTMIN", Blockly.Tngl.ORDER_NONE) || "0%";
+  var value_parameter_outmax = Blockly.Tngl.valueToCode(block, "PARAMETER_OUTMAX", Blockly.Tngl.ORDER_NONE) || "0%";
+  // mapValue(channel(0x00), value(0x00), value(0xff), value(0xff), value(0x00))
+  var code = "mapValue(" + value_parameter_x + ", " + value_parameter_inmin + ", " + value_parameter_inmax + ", " + value_parameter_outmin + ", " + value_parameter_outmax + ")";
   return [code, Blockly.Tngl.ORDER_NONE];
 };
 
@@ -1310,28 +1299,28 @@ Blockly.Tngl["sensor_touch"] = function (block) {
   var text_touch_label = block.getFieldValue("TOUCH_LABEL");
   var dropdown_action = block.getFieldValue("ACTION");
   var text_event_label = block.getFieldValue("EVENT_LABEL");
-  var code = '\n.attachSensTouch(' + formatLabel(text_touch_label) + ', ' + dropdown_action + ', ' + formatLabel(text_event_label) + ')';
+  var code = "\n.attachSensTouch(" + formatLabel(text_touch_label) + ", " + dropdown_action + ", " + formatLabel(text_event_label) + ")";
   return code;
 };
 
 Blockly.Tngl["sensor_gyro"] = function (block) {
   var dropdown_action = block.getFieldValue("ACTION");
   var text_event_label = block.getFieldValue("EVENT_LABEL");
-  var code = '\n.attachSensGyroscope(' + dropdown_action + ', ' + formatLabel(text_event_label) + ')';
+  var code = "\n.attachSensGyroscope(" + dropdown_action + ", " + formatLabel(text_event_label) + ")";
   return code;
 };
 
 Blockly.Tngl["sensor_acc"] = function (block) {
   var dropdown_action = block.getFieldValue("ACTION");
   var text_event_label = block.getFieldValue("EVENT_LABEL");
-  var code = '\n.attachSensAccelerometer(' + dropdown_action + ', ' + formatLabel(text_event_label) + ')';
+  var code = "\n.attachSensAccelerometer(" + dropdown_action + ", " + formatLabel(text_event_label) + ")";
   return code;
 };
 
 Blockly.Tngl["sensor_gesture"] = function (block) {
   var dropdown_action = block.getFieldValue("ACTION");
   var text_event_label = block.getFieldValue("EVENT_LABEL");
-  var code = '\n.attachSensGesture(' + dropdown_action + ', ' + formatLabel(text_event_label) + ')';
+  var code = "\n.attachSensGesture(" + dropdown_action + ", " + formatLabel(text_event_label) + ")";
   return code;
 };
 
@@ -1339,7 +1328,7 @@ Blockly.Tngl["sensor_button"] = function (block) {
   var text_button_label = block.getFieldValue("BUTTON_LABEL");
   var dropdown_action = block.getFieldValue("ACTION");
   var text_event_label = block.getFieldValue("EVENT_LABEL");
-  var code = '\n.attachSensButton(' + formatLabel(text_button_label) + ', ' + dropdown_action + ', ' + formatLabel(text_event_label) + ')';
+  var code = "\n.attachSensButton(" + formatLabel(text_button_label) + ", " + dropdown_action + ", " + formatLabel(text_event_label) + ")";
   return code;
 };
 
@@ -1383,17 +1372,16 @@ Blockly.Tngl["generator_square"] = function (block) {
   return [code, Blockly.Tngl.ORDER_NONE];
 };
 
-
 Blockly.Tngl["generator_smoothout"] = function (block) {
   var text_duration = block.getFieldValue("DURATION");
-  var value_smoothed_value = Blockly.Tngl.valueToCode(block, "SMOOTHED_VALUE", Blockly.Tngl.ORDER_NONE);
+  var value_smoothed_value = Blockly.Tngl.valueToCode(block, "SMOOTHED_VALUE", Blockly.Tngl.ORDER_NONE) || "0%";
   var code = "genSmoothOut(" + value_smoothed_value + ", " + text_duration + ")";
   return [code, Blockly.Tngl.ORDER_NONE];
 };
 
-Blockly.Tngl['generator_lag'] = function(block) {
-  var text_duration = block.getFieldValue('DURATION');
-  var value_lagged_value = Blockly.Tngl.valueToCode(block, 'LAGGED_VALUE', Blockly.Tngl.ORDER_NONE);
+Blockly.Tngl["generator_lag"] = function (block) {
+  var text_duration = block.getFieldValue("DURATION");
+  var value_lagged_value = Blockly.Tngl.valueToCode(block, "LAGGED_VALUE", Blockly.Tngl.ORDER_NONE);
   var code = "genLagValue(" + value_lagged_value + ", " + text_duration + ")";
   return [code, Blockly.Tngl.ORDER_NONE];
 };

@@ -190,7 +190,7 @@ Blockly.Blocks["animation_loading_bar"] = {
 
 Blockly.Blocks["animation_none"] = {
   init: function () {
-    this.appendValueInput("NEXT").setCheck("animation").appendField("PRÁZDNÁ  ANIMACE").appendField("⌛").appendField(new Blockly.FieldTextInput("5s"), "DURATION").appendField("s");
+    this.appendValueInput("NEXT").setCheck("animation").appendField("PRÁZDNÁ  ANIMACE").appendField("⌛").appendField(new Blockly.FieldTextInput("5s"), "DURATION");
     this.setOutput(true, "animation");
     this.setColour(240);
     this.setTooltip("");
@@ -470,7 +470,17 @@ Blockly.Blocks["modifier_settime"] = {
 
 Blockly.Blocks["frame"] = {
   init: function () {
-    this.appendDummyInput().appendField("v čase").appendField(new Blockly.FieldTextInput("0s"), "START").appendField(" ⌛").appendField(new Blockly.FieldTextInput("5s"), "DURATION");
+    this.appendDummyInput()
+      .appendField("v čase")
+      .appendField(new Blockly.FieldTextInput("0s"), "START")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["⌛", "DURATION"],
+          ["➡️", "FROM_TO"],
+        ]),
+        "TIME_DEFINITION",
+      )
+      .appendField(new Blockly.FieldTextInput("5s"), "DURATION");
     this.appendStatementInput("BODY").setCheck("construct");
     this.setPreviousStatement(true, "construct");
     this.setNextStatement(true, "construct");
