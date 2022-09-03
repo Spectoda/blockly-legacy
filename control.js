@@ -1,5 +1,6 @@
 import TangleMsgBox from "./lib/webcomponents/dialog-component.js";
 import { SpectodaSound } from "./lib/tangle-js/SpectodaSound.js";
+import { logging } from "./lib/tangle-js/Logging.js";
 
 // Just to make blockly interactive first and let libraries load in the background
 window.onload = function () {
@@ -158,7 +159,18 @@ window.onload = function () {
   });
 
   window.wavesurfer.on("seek", () => {
-    Code.music.currentTime = window.wavesurfer.getCurrentTime();
+    logging.debug('wavesurfer.on("seek")');
+
+    let currentTime = window.wavesurfer.getCurrentTime();
+
+    if (Code.music.src) {
+      Code.music.currentTime = currentTime;
+    }
+
+    if (Code.metronome.src) {
+      Code.metronome.currentTime = currentTime;
+    }
+
   });
 
   // wavesurfer.setMute(true);
@@ -204,6 +216,7 @@ window.onload = function () {
 
   document.addEventListener("keypress", function onPress(event) {
     if (event.key === " ") {
+      
       if(Code.music.paused){
         Code.timeline.unpause();
         console.log("Play");
@@ -226,7 +239,8 @@ window.onload = function () {
           }
         }
       
-        Code.device.syncTimeline();
+        // Code.device.syncTimeline();
+
       } else {
         Code.timeline.pause();
         console.log("Pause");
@@ -239,7 +253,8 @@ window.onload = function () {
           Code.metronome.pause();
         }
       
-        Code.device.syncTimeline();
+        // Code.device.syncTimeline();
+
       }
 
   }
@@ -573,9 +588,9 @@ document.getElementById("music").addEventListener("change", function () {
   Code.music.setAttribute("src", url);
   wavesurfer.load(url);
 
-  Code.device.timeline.pause();
-  Code.device.timeline.setMillis(wavesurfer.getCurrentTime() * 1000);
-  Code.device.syncTimeline();
+  // Code.device.timeline.pause();
+  // Code.device.timeline.setMillis(wavesurfer.getCurrentTime() * 1000);
+  // Code.device.syncTimeline();
 });
 
 document.getElementById("metronome").addEventListener("change", function () {

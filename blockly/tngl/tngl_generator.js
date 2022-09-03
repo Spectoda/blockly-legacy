@@ -179,7 +179,7 @@ function getDuration(from, to) {
   } else if (to == "Infinity") {
     return "Infinity";
   } else {
-    return validateTimestamp(to)[0] - validateTimestamp(from)[0] + "t";
+    return validateTimestamp(to)[0] - validateTimestamp(from)[0] + "ms";
   }
 }
 
