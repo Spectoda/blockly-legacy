@@ -366,13 +366,17 @@ var offset = 0;
 
 Code.music.addEventListener("timeupdate", async () => {
 
-  console.log("music.addEventListener(\"timeupdate\")");
+  console.log('music.addEventListener("timeupdate")');
 
   const dur = window.wavesurfer.getDuration();
   const pos = dur ? Code.music.currentTime / window.wavesurfer.getDuration() : 0;
 
   window.wavesurfer.setDisabledEventEmissions(["seek"]);
-  window.wavesurfer.seekAndCenter(pos >= 1.0 ? 1.0 : pos);
+  try {
+    window.wavesurfer.seekAndCenter(pos >= 1.0 ? 1.0 : pos);
+  } catch (e) {
+    console.warn(e);
+  }
   window.wavesurfer.setDisabledEventEmissions([]);
 
   let paused = Code.music.paused;
@@ -466,28 +470,24 @@ Code.music.addEventListener("pause", () => {
 });
 
 Code.play = async function () {
-
   console.log("Play");
 
   // Code.timeline.unpause();
 
-  if (Code.music.src) {
-    if (Code.metronome.src) {
+  // if (Code.music.src) {
+  if (Code.metronome.src) {
+    let timestamp = Code.music.currentTime;
 
-      let timestamp = Code.music.currentTime;
+    Code.metronome.load();
+    Code.music.load();
 
-      Code.metronome.load();
-      Code.music.load();
+    Code.metronome.currentTime = timestamp + offset;
+    Code.music.currentTime = timestamp;
 
-      Code.metronome.currentTime = timestamp + offset;
-      Code.music.currentTime = timestamp;
-
-      Code.metronome.play();
-      Code.music.play();
-    } else {
-      Code.music.play();
-    }
+    Code.metronome.play();
   }
+
+  Code.music.play();
 
   // Code.device.syncTimeline();
 };
