@@ -398,6 +398,9 @@ Code.music.addEventListener("timeupdate", async () => {
     console.log("delta:", delta);
 
     if (delta > 0.02 || delta < -0.02) {
+
+      console.warn("Large music track delta: ", delta);
+
       if (paused) {
         let timestamp = Code.music.currentTime;
 
@@ -406,7 +409,6 @@ Code.music.addEventListener("timeupdate", async () => {
       }
 
       if (!paused && Code.timeline.paused()) {
-        console.warn("Large music track delta: ", delta);
         console.log("Synchronizing music tracks...");
 
         let timestamp = Code.music.currentTime;
@@ -424,7 +426,7 @@ Code.music.addEventListener("timeupdate", async () => {
       console.log("Synced delta:", Code.metronome.currentTime - Code.music.currentTime);
       return;
     }
-    
+
     //else {
     //   offset = delta;
 
