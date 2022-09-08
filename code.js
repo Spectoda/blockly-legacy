@@ -374,6 +374,7 @@ Code.bank = 0;
 
 
 var offset = 0;
+var counter = 0;
 
 Code.music.addEventListener("timeupdate", async () => {
 
@@ -407,6 +408,7 @@ Code.music.addEventListener("timeupdate", async () => {
     if (delta > 0.02 || delta < -0.02) {
 
       console.warn("Large music track delta: ", delta);
+      counter++;
 
       if (paused) {
         let timestamp = Code.music.currentTime;
@@ -415,8 +417,10 @@ Code.music.addEventListener("timeupdate", async () => {
         Code.music.currentTime = timestamp;
       }
 
-      if (!paused && Code.timeline.paused()) {
+      if (!paused && (Code.timeline.paused() || counter >= 10)) {
         console.log("Synchronizing music tracks...");
+
+        counter = 0;
 
         let timestamp = Code.music.currentTime;
 
