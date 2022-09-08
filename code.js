@@ -397,6 +397,13 @@ Code.music.addEventListener("timeupdate", async () => {
 
     console.log("delta:", delta);
 
+    if(delta == 0.0) {
+
+      console.warn("Skipping 0 delta");
+
+      return;
+    }
+
     if (delta > 0.02 || delta < -0.02) {
 
       console.warn("Large music track delta: ", delta);
