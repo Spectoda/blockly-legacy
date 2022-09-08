@@ -395,7 +395,7 @@ Code.music.addEventListener("timeupdate", async () => {
   if (Code.metronome.src) {
     let delta = Code.music.currentTime - Code.metronome.currentTime;
 
-    //console.log("delta:", delta);
+    console.log("delta:", delta);
 
     if (delta > 0.02 || delta < -0.02) {
       if (paused) {
@@ -405,7 +405,7 @@ Code.music.addEventListener("timeupdate", async () => {
         Code.music.currentTime = timestamp;
       }
 
-      if (!paused) {
+      if (!paused && Code.timeline.paused()) {
         console.warn("Large music track delta: ", delta);
         console.log("Synchronizing music tracks...");
 
