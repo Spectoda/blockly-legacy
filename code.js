@@ -397,7 +397,7 @@ Code.music.addEventListener("timeupdate", async () => {
 
     console.log("delta:", delta);
 
-    if(delta == 0.0) {
+    if(!paused && delta == 0.0) {
 
       console.warn("Skipping 0 delta");
 
