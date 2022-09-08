@@ -417,10 +417,8 @@ Code.music.addEventListener("timeupdate", async () => {
         Code.music.currentTime = timestamp;
       }
 
-      if (!paused && (Code.timeline.paused() || counter >= 10)) {
+      if (!paused && (Code.timeline.paused() || counter >= 3)) {
         console.log("Synchronizing music tracks...");
-
-        counter = 0;
 
         let timestamp = Code.music.currentTime;
 
@@ -436,6 +434,10 @@ Code.music.addEventListener("timeupdate", async () => {
 
       console.log("Synced delta:", Code.metronome.currentTime - Code.music.currentTime);
       return;
+    } 
+    
+    else {
+      counter = 0;
     }
 
     //else {
