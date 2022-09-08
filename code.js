@@ -378,7 +378,7 @@ var counter = 0;
 
 Code.music.addEventListener("timeupdate", async () => {
 
-  console.log('music.addEventListener("timeupdate")');
+  // console.log('music.addEventListener("timeupdate")');
 
   const dur = window.wavesurfer.getDuration();
   const pos = dur ? Code.music.currentTime / window.wavesurfer.getDuration() : 0;
@@ -396,7 +396,7 @@ Code.music.addEventListener("timeupdate", async () => {
   if (Code.metronome.src) {
     let delta = Code.music.currentTime - Code.metronome.currentTime;
 
-    console.log("delta:", delta);
+    // console.log("delta:", delta);
 
     if(!paused && delta == 0.0) {
 
