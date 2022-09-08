@@ -422,7 +422,9 @@ Code.music.addEventListener("timeupdate", async () => {
       }
 
       console.log("Synced delta:", Code.metronome.currentTime - Code.music.currentTime);
+      return;
     }
+    
     //else {
     //   offset = delta;
 
