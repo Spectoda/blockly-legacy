@@ -54,9 +54,9 @@ Code.hideConsole = function () {
 
 Code.device = new TangleDevice("default", 0);
 
-Code.device.setDebugLevel(5);
+Code.device.setDebugLevel(3);
 setTimeout(() => {
-  Code.device.setDebugLevel(5);
+  Code.device.setDebugLevel(3);
 }, 1000);
 
 const devices_textarea = document.querySelector("#devices_textarea");
@@ -270,8 +270,19 @@ Code.debug.setVisible = function (enable) {
   }
 };
 
+Code.debug.textarea.readonly = true;
+Code.debug.textarea.disabled = true;
+
 Code.device.on("receive", message => {
   Code.debug.textarea.textContent += message.payload;
+
+  const length = Code.debug.textarea.textContent.length;
+
+  if (length > 1024 * 10) {
+    Code.debug.textarea.textContent = Code.debug.textarea.textContent.substring(length - (1024 * 8), length);
+  }
+
+  Code.debug.textarea.scrollTop = Code.debug.textarea.scrollHeight;
 });
 
 Code.device.on("event", event => {
