@@ -1682,6 +1682,17 @@ Code.testDummyPing = async function () {
   window.alert("Average turnaroud time: " + average + " ms");
 };
 
+Code.configure = function () {
+
+  Code.device.emitTimestampEvent("lag", 0, 255);
+
+  let rozmisteni = [11,3,8,1,4,10,9,12,2,5,7,6];
+
+  for (let i = 0; i < 12; i++) {
+    Code.device.emitTimestampEvent("lag", 50 * i, rozmisteni[i]);
+  }
+}
+
 
 Code.sendLeft = function () {
   Code.device.emitTimestampEvent("lag", 0, 255);

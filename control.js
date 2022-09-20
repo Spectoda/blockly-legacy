@@ -48,6 +48,7 @@ window.onload = function () {
   const control_timestamp_value = document.querySelector("#control_timestamp_value");
   const control_color_value = /** @type {HTMLInputElement} */ document.querySelector("#control_color_value");
   const control_color_picker = document.querySelector("#control_color_picker");
+  const control_label_value = document.querySelector("#control_label_value");
 
   const control_connector_select = document.querySelector("#control_connector_select");
 
@@ -321,16 +322,14 @@ window.onload = function () {
     if (currentControlType === "percentage_control") {
       if (value === null) {
         log_value = control_percentage_value.value + "%";
-        Code.device.emitPercentageEvent(control_label.value, parseFloat(control_percentage_value.value), [control_destination.value], true, false).then(() => {
-          console.log("Sent!");
-        });
+        Code.device.emitPercentageEvent(control_label.value, parseFloat(control_percentage_value.value), [control_destination.value], true, false);
       } else {
         log_value = value + "%";
         Code.device.emitPercentageEvent(control_label.value, parseFloat(value), [control_destination.value], false, false);
       }
     } else if (currentControlType === "color_control") {
       // if (!value) {
-      const hexColor = getHexColor(document.querySelector("#control_color_value").value);
+      const hexColor = getHexColor(control_color_value.value);
       log_value = `<span style="color:${hexColor}">` + hexColor + `</span>`;
       Code.device.emitColorEvent(control_label.value, hexColor, [control_destination.value], true, false);
 
@@ -341,9 +340,14 @@ window.onload = function () {
       log_value = control_timestamp_value.value + " ms";
       // TODO parse timeparams (x seconds, x minutes, x hours, x days), like in block
       Code.device.emitTimestampEvent(control_label.value, control_timestamp_value.value, [control_destination.value], true, false);
+    } 
+    
+    //
+    else if (currentControlType === "label_control") {
+      log_value = "$" + control_label_value.value;
+      Code.device.emitLabelEvent(control_label.value, control_label_value.value, [control_destination.value], true, false);
     }
   }
-
 
   const sliders = [
     "sli_0",

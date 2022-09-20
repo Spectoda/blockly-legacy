@@ -347,6 +347,8 @@
           <button onclick="javascript:Code.device.emitEvent('off', 255);">OFF</button>
           <button onclick="javascript:Code.device.emitEvent('flash', 255);">FLASH</button>
           <button onclick="javascript:window.flutter_inappwebview.callHandler('openExternalUrl', 'https://spectoda.com/');">Flutter openExternalUrl</button>
+          <button onclick="javascript:Code.configure();">MAKER FAIRE</button>
+
 
 
         </span>
@@ -421,6 +423,7 @@
           <option value="percentage_control">Percentage</option>
           <option value="color_control">Color</option>
           <option value="timestamp_control">Timestamp</option>
+          <option value="label_control">Label</option>
         </select>
       </div>
 
@@ -439,6 +442,10 @@
       <div id="timestamp_control" style="display: none;">
         🕹️ TIMESTAMP <input style="width: 10%;" type="number" id="control_timestamp_value" min="0" max="2147483647"
           value="1000"> ms
+      </div>
+
+      <div id="label_control" style="display: none;">
+        🕹️ LABEL <input style="width: 10%;" type="text" id="control_label_value" value="label">
       </div>
 
       <div>
