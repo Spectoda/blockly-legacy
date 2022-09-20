@@ -380,10 +380,32 @@
         <shadow type="animation_dummy_next"></shadow>
       </value>
     </block>
-        <block type="animation_color_gradient3">
+    <block type="animation_color_gradient2">
+      <field name="COLOR1">#000000</field>
+      <field name="COLOR2">#000000</field>
+      <field name="SMOOTHING">100%</field>
+      <field name="SCALE">100%</field>
+      <field name="DURATION">5s</field>
+      <value name="NEXT">
+        <shadow type="animation_dummy_next"></shadow>
+      </value>
+    </block>
+    <block type="animation_color_gradient3">
       <field name="COLOR1">#000000</field>
       <field name="COLOR2">#000000</field>
       <field name="COLOR3">#000000</field>
+      <field name="SMOOTHING">100%</field>
+      <field name="SCALE">100%</field>
+      <field name="DURATION">5s</field>
+      <value name="NEXT">
+        <shadow type="animation_dummy_next"></shadow>
+      </value>
+    </block>
+    <block type="animation_color_gradient4">
+      <field name="COLOR1">#000000</field>
+      <field name="COLOR2">#000000</field>
+      <field name="COLOR3">#000000</field>
+      <field name="COLOR4">#000000</field>
       <field name="SMOOTHING">100%</field>
       <field name="SCALE">100%</field>
       <field name="DURATION">5s</field>

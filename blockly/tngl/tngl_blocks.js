@@ -219,6 +219,29 @@ Blockly.Blocks["animation_color_roll"] = {
   },
 };
 
+Blockly.Blocks["animation_color_gradient2"] = {
+  init: function () {
+    this.appendValueInput("NEXT")
+      .setCheck("animation")
+      .appendField("GRADIENT ")
+      .appendField(new Blockly.FieldColour("#000000"), "COLOR1")
+      .appendField(new Blockly.FieldColour("#000000"), "COLOR2")
+      .appendField("  smoothing")
+      .appendField(new Blockly.FieldTextInput("100%"), "SMOOTHING")
+      .appendField(" scale")
+      .appendField(new Blockly.FieldTextInput("100%"), "SCALE")
+      .appendField("⌛")
+      .appendField(new Blockly.FieldTextInput("5s"), "DURATION");
+    this.setInputsInline(false);
+    this.setOutput(true, "animation");
+    this.setColour(240);
+    this.setTooltip("");
+    this.setHelpUrl("");
+    this.setMutators();
+    this.setValidators();
+  },
+};
+
 Blockly.Blocks["animation_color_gradient3"] = {
   init: function () {
     this.appendValueInput("NEXT")
@@ -243,6 +266,30 @@ Blockly.Blocks["animation_color_gradient3"] = {
   },
 };
 
+Blockly.Blocks["animation_color_gradient4"] = {
+  init: function () {
+    this.appendValueInput("NEXT")
+      .setCheck("animation")
+      .appendField("GRADIENT ")
+      .appendField(new Blockly.FieldColour("#000000"), "COLOR1")
+      .appendField(new Blockly.FieldColour("#000000"), "COLOR2")
+      .appendField(new Blockly.FieldColour("#000000"), "COLOR3")
+      .appendField(new Blockly.FieldColour("#000000"), "COLOR4")
+      .appendField("  smoothing")
+      .appendField(new Blockly.FieldTextInput("100%"), "SMOOTHING")
+      .appendField(" scale")
+      .appendField(new Blockly.FieldTextInput("100%"), "SCALE")
+      .appendField("⌛")
+      .appendField(new Blockly.FieldTextInput("5s"), "DURATION");
+    this.setInputsInline(false);
+    this.setOutput(true, "animation");
+    this.setColour(240);
+    this.setTooltip("");
+    this.setHelpUrl("");
+    this.setMutators();
+    this.setValidators();
+  },
+};
 
 Blockly.Blocks["animation_color_gradient5"] = {
   init: function () {
