@@ -291,7 +291,7 @@ const ANIMATION_FADE_MIXIN = {
   },
 };
 
-Blockly.Extensions.registerMutator("animation_fade_mutator",  ANIMATION_FADE_MIXIN, null, [""]);
+Blockly.Extensions.registerMutator("animation_fade_mutator", ANIMATION_FADE_MIXIN, null, [""]);
 
 ///////////////////////////////////////////////////////////////
 

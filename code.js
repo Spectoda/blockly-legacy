@@ -285,9 +285,9 @@ Code.device.on("receive", message => {
   Code.debug.textarea.scrollTop = Code.debug.textarea.scrollHeight;
 });
 
-Code.device.on("event", event => {
-  console.log("Catched event:", event);
-});
+// Code.device.on("event", event => {
+//   console.log("Catched event:", event);
+// });
 
 Code.rssi = {};
 
