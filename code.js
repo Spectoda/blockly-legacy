@@ -42,6 +42,7 @@ var Code = {};
 
 Code.revealConsole = function () {
   enableDebugMode();
+  Code.device.setDebugLevel(4);
 };
 
 Code.hideConsole = function () {
@@ -55,9 +56,6 @@ Code.hideConsole = function () {
 Code.device = new TangleDevice("default", 0);
 
 Code.device.setDebugLevel(3);
-setTimeout(() => {
-  Code.device.setDebugLevel(3);
-}, 1000);
 
 const devices_textarea = document.querySelector("#devices_textarea");
 
