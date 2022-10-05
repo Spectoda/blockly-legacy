@@ -274,6 +274,25 @@ Blockly.JavaScript["event_emit_code"] = function (block) {
   return [code, Blockly.JavaScript.ORDER_NONE];
 };
 
+Blockly.JavaScript['event_randomize'] = function(block) {
+  var value_event_a = Blockly.JavaScript.valueToCode(block, 'EVENT_A', Blockly.JavaScript.ORDER_ATOMIC);
+  var value_event_b = Blockly.JavaScript.valueToCode(block, 'EVENT_B', Blockly.JavaScript.ORDER_ATOMIC);
+  // TODO: Assemble JavaScript into code variable.
+  var code = '...';
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.JavaScript.ORDER_NONE];
+};
+
+Blockly.JavaScript['event_chance'] = function(block) {
+  var value_event = Blockly.JavaScript.valueToCode(block, 'EVENT', Blockly.JavaScript.ORDER_ATOMIC);
+  var value_event_a = Blockly.JavaScript.valueToCode(block, 'EVENT_A', Blockly.JavaScript.ORDER_ATOMIC);
+  var value_event_b = Blockly.JavaScript.valueToCode(block, 'EVENT_B', Blockly.JavaScript.ORDER_ATOMIC);
+  // TODO: Assemble JavaScript into code variable.
+  var code = '...';
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.JavaScript.ORDER_NONE];
+};
+
 Blockly.JavaScript["handler_manual"] = function (block) {
   var text_start = block.getFieldValue("START");
   var text_duration = block.getFieldValue("DURATION");

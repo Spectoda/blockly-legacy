@@ -2228,6 +2228,145 @@
         <field name="HUE">120</field>
       </block>
     </value>
+  </block><block type="factory_base" id="guI,AZ{vXOd}L[u?#_Gl" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">event_randomize</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_value" id="7AP%pBmOk6gFJKRG|_AQ">
+        <field name="INPUTNAME">EVENT_A</field>
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="F21PlT6gKNrmx{uha[[U">
+            <field name="TEXT">🢂  🎲</field>
+          </block>
+        </statement>
+        <value name="TYPE">
+          <shadow type="type_null" id="h0R:KB)XP42?QPeqp,3A"></shadow>
+          <block type="type_other" id="f1:EJEq9VbWm~(|kT[Sr">
+            <field name="TYPE">event</field>
+          </block>
+        </value>
+        <next>
+          <block type="input_value" id="=b%;1lr]R-zKOuv7zL}v">
+            <field name="INPUTNAME">EVENT_B</field>
+            <field name="ALIGN">LEFT</field>
+            <statement name="FIELDS">
+              <block type="field_static" id="nWy8sORgl238(s!snpXC">
+                <field name="TEXT">🢂  🎲</field>
+              </block>
+            </statement>
+            <value name="TYPE">
+              <shadow type="type_null" id="h0R:KB)XP42?QPeqp,3A"></shadow>
+              <block type="type_other" id="-4^fKflS^l^%PxzAe)va">
+                <field name="TYPE">event</field>
+              </block>
+            </value>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="MwTRC~fqKh~(aV-Ob+Dh" deletable="false" movable="false">
+        <field name="TEXT">Randomize path of an event</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="C2SXsLpvvLU7;HLhJ*|x" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="iD%9j/,U8OkiG6oop|!Y"></shadow>
+      <block type="type_other" id="Ok9-AsS/1ML/@T=Cwk@n">
+        <field name="TYPE">event</field>
+      </block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="IA~Fmwj`Jma~*juM}~YX">
+        <mutation colour="#5ba55b"></mutation>
+        <field name="HUE">120</field>
+      </block>
+    </value>
+  </block><block type="factory_base" id="guI,AZ{vXOd}L[u?#_Gl" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">event_chance</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_value" id="JYKkd=3tQK0YvKN=/SWe">
+        <field name="INPUTNAME">EVENT</field>
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id=")jKR2ZRek~ybcaZL.kKy">
+            <field name="TEXT">🢂  THEN</field>
+          </block>
+        </statement>
+        <value name="TYPE">
+          <shadow type="type_null" id="h0R:KB)XP42?QPeqp,3A"></shadow>
+          <block type="type_other" id="(+w[4?LNt|.8mjo{.:;p">
+            <field name="TYPE">event</field>
+          </block>
+        </value>
+        <next>
+          <block type="input_value" id="7AP%pBmOk6gFJKRG|_AQ">
+            <field name="INPUTNAME">EVENT_A</field>
+            <field name="ALIGN">LEFT</field>
+            <statement name="FIELDS">
+              <block type="field_static" id="F21PlT6gKNrmx{uha[[U">
+                <field name="TEXT">🢂  🎲</field>
+              </block>
+            </statement>
+            <value name="TYPE">
+              <shadow type="type_null" id="h0R:KB)XP42?QPeqp,3A"></shadow>
+              <block type="type_other" id="f1:EJEq9VbWm~(|kT[Sr">
+                <field name="TYPE">event</field>
+              </block>
+            </value>
+            <next>
+              <block type="input_value" id="cf;l*H4`9h?yZI3Fi(h|">
+                <field name="INPUTNAME">EVENT_B</field>
+                <field name="ALIGN">LEFT</field>
+                <statement name="FIELDS">
+                  <block type="field_static" id="rbHz]A4[fxuU$)!g[A10">
+                    <field name="TEXT">🢂  🎲</field>
+                  </block>
+                </statement>
+                <value name="TYPE">
+                  <shadow type="type_null" id="h0R:KB)XP42?QPeqp,3A"></shadow>
+                  <block type="type_other" id="2lGFs;Zu;Ztnb,jjKMPk">
+                    <field name="TYPE">event</field>
+                  </block>
+                </value>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="MwTRC~fqKh~(aV-Ob+Dh" deletable="false" movable="false">
+        <field name="TEXT">Emit locally as another event</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="C2SXsLpvvLU7;HLhJ*|x" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="iD%9j/,U8OkiG6oop|!Y"></shadow>
+      <block type="type_other" id="Ok9-AsS/1ML/@T=Cwk@n">
+        <field name="TYPE">event</field>
+      </block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="IA~Fmwj`Jma~*juM}~YX">
+        <mutation colour="#5ba55b"></mutation>
+        <field name="HUE">120</field>
+      </block>
+    </value>
   </block><block type="factory_base" id="tDQmyFOR7=eTkbwyGwnk" deletable="false" movable="false" x="10" y="10">
     <mutation connections="BOTH"></mutation>
     <field name="NAME">handler_manual</field>

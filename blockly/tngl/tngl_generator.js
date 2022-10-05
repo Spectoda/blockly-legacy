@@ -740,6 +740,29 @@ Blockly.Tngl["event_emit_code"] = function (block) {
 //   return code;
 // };
 
+Blockly.Tngl['event_randomize'] = function(block) {
+  var value_event_a = Blockly.Tngl.valueToCode(block, "EVENT_A", Blockly.Tngl.ORDER_NONE);
+  var value_event_b = Blockly.Tngl.valueToCode(block, "EVENT_B", Blockly.Tngl.ORDER_NONE);
+
+  var code = "...";
+
+  // ->randomChoice({->emitAs($e_1)->emitAs($e_2)}, {->emitAs($e_2)})
+  var code = "->randomChoice({" + value_event_a + "}, {" + value_event_b + "})";
+
+  return [code, Blockly.Tngl.ORDER_NONE];
+};
+
+Blockly.Tngl['event_chance'] = function(block) {
+  var value_event = Blockly.Tngl.valueToCode(block, 'EVENT', Blockly.Tngl.ORDER_NONE);
+  var value_event_a = Blockly.Tngl.valueToCode(block, 'EVENT_A', Blockly.Tngl.ORDER_NONE);
+  var value_event_b = Blockly.Tngl.valueToCode(block, 'EVENT_B', Blockly.Tngl.ORDER_NONE);
+
+  // ->randomChoice({->emitAs($e_1)->emitAs($e_2)}, {->emitAs($e_2)})->emitAs($label)
+  var code = "->randomChoice({" + value_event_a + "}, {" + value_event_b + "})" + value_event;
+
+  return [code, Blockly.Tngl.ORDER_NONE];
+};
+
 Blockly.Tngl["handler_manual"] = function (block) {
   var text_start = block.getFieldValue("START");
   var text_duration = block.getFieldValue("DURATION");

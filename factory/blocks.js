@@ -438,6 +438,29 @@ Blockly.Blocks["event_emit_code"] = {
   },
 };
 
+Blockly.Blocks["event_randomize"] = {
+  init: function () {
+    this.appendValueInput("EVENT_A").setCheck("event").appendField("🢂  🎲");
+    this.appendValueInput("EVENT_B").setCheck("event").appendField("🢂  🎲");
+    this.setOutput(true, "event");
+    this.setColour(120);
+    this.setTooltip("Randomize path of an event");
+    this.setHelpUrl("");
+  },
+};
+
+Blockly.Blocks["event_chance"] = {
+  init: function () {
+    this.appendValueInput("EVENT").setCheck("event").appendField("🢂  THEN");
+    this.appendValueInput("EVENT_A").setCheck("event").appendField("🢂  🎲");
+    this.appendValueInput("EVENT_B").setCheck("event").appendField("🢂  🎲");
+    this.setOutput(true, "event");
+    this.setColour(120);
+    this.setTooltip("Emit locally as another event");
+    this.setHelpUrl("");
+  },
+};
+
 Blockly.Blocks["handler_manual"] = {
   init: function () {
     this.appendDummyInput()
