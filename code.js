@@ -396,15 +396,13 @@ Code.music.addEventListener("timeupdate", async () => {
 
     // console.log("delta:", delta);
 
-    if(!paused && delta == 0.0) {
-
+    if (!paused && delta == 0.0) {
       console.warn("Skipping 0 delta");
 
       return;
     }
 
     if (delta > 0.02 || delta < -0.02) {
-
       console.warn("Large music track delta: ", delta);
       counter++;
 
@@ -432,9 +430,7 @@ Code.music.addEventListener("timeupdate", async () => {
 
       console.log("Synced delta:", Code.metronome.currentTime - Code.music.currentTime);
       return;
-    } 
-    
-    else {
+    } else {
       counter = 0;
     }
 
@@ -450,14 +446,25 @@ Code.music.addEventListener("timeupdate", async () => {
     // }
   }
 
-  if (paused) {
+  if (paused && !Code.timeline.paused()) {
     Code.timeline.pause();
-  } else {
-    Code.timeline.unpause();
   }
 
-  Code.timeline.setMillis(Code.music.currentTime * 1000);
-  Code.device.syncTimeline();
+  if (paused) {
+    Code.timeline.setMillis(Code.music.currentTime * 1000);
+    Code.device.syncTimeline();
+  }
+
+  if (!paused && Code.timeline.paused()) {
+    Code.timeline.unpause();
+
+    Code.timeline.setMillis(Code.music.currentTime * 1000);
+    Code.device.syncTimeline();
+  }
+
+
+
+
 });
 
 Code.music.addEventListener("play", () => {
@@ -1345,10 +1352,10 @@ Code.onKeyPress = function (e) {
   // let codes = ['KeyQ', 'KeyW', 'KeyE', 'KeyR', 'KeyA', 'KeyS', 'KeyD', 'KeyF', 'KeyY', 'KeyX', 'KeyC', 'KeyV', 'KeyZ'];
   let keys = ["Q", "W", "E", "R", "A", "S", "D", "F", "Y", "X", "C", "V", "Z", "T"];
 
-  if (keys.includes(e.key) /*&& e.shiftKey*/) {
-    console.log("Keypress " + e.key + " trigger");
-    Code.device.emitEvent(e.key.charCodeAt(0), 255);
-  }
+  // if (keys.includes(e.key) /*&& e.shiftKey*/) {
+  //   console.log("Keypress " + e.key + " trigger");
+  //   Code.device.emitEvent(e.key.charCodeAt(0), 255);
+  // }
 };
 
 // Load the Code demo's language strings.
