@@ -1695,8 +1695,8 @@ Code.configure = function () {
 Code.sendLeft = function () {
   Code.device.emitTimestampEvent("lag", 0, 255);
 
-  for (let i = 0; i < 8; i++) {
-    Code.device.emitTimestampEvent("lag", 50 * i, i + 1);
+  for (let i = 0; i < 12; i++) {
+    Code.device.emitTimestampEvent("lag", 50 * i, i + 5);
   }
 };
 
