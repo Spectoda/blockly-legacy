@@ -1125,7 +1125,15 @@ Code.init = function () {
     }
   };
 
-  Code.otaUpdateNetworkConfig = function () {
+  Code.otaUpdateNetworkConfig = async function () {
+
+    let result = await window.confirm("Opravdu chcete zapsat config všem zařízením?");
+
+    if (!result) {
+      window.alert("Config write CANCEL");
+      return;
+    }
+
     try {
       const raw_config = config_textarea.value.replace(/\\"/g, '"');
       console.log(raw_config);
